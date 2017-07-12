@@ -1,4 +1,3 @@
-from processify import processify
 from collections import OrderedDict
 import time
 import pandas as pd
@@ -6,7 +5,7 @@ from scipy.interpolate import InterpolatedUnivariateSpline
 import math
 
 
-class Timer:
+class Timer(object):
     def __enter__(self):
         self.start = time.clock()
         return self
@@ -49,8 +48,7 @@ def time_profile(proc, vary_proportion_b = [0.1, 0.2, 0.3, 0.4], repeat = 3):
     stats_list = []
 
     for prop in vary_proportion_b:
-        n = math.ceil(prop*len_b)
-        print(n)
+        n = int(math.ceil(prop*len_b))
         tmp = (proc[0], (proc[1][0], B.sample(n),), proc[2])
         stats_dict = {}
         d = _profile_time ((tmp), repeat=repeat)
@@ -58,33 +56,20 @@ def time_profile(proc, vary_proportion_b = [0.1, 0.2, 0.3, 0.4], repeat = 3):
         stats_dict['Num Tuples in B'] = n
         stats_dict['Computed'] = True
         stats_dict['TimeTaken'] = d
-        print(d)
-        print()
         stats_list.append(stats_dict)
 
         time.sleep(1)
-    print()
     for d in stats_list:
         print(d)
-        print()
-
     stats = pd.DataFrame(stats_list)
-    print()
     print(stats)
     x, y, z = list(stats['Num Tuples in A']), \
                   list(stats['Num Tuples in B']), list(stats['TimeTaken'])
-    print()
-    print(y)
 
-    print()
-    print(z)
 
 
     interpolation_function = InterpolatedUnivariateSpline(y, z, k=1)
     estimated_time = interpolation_function(len_b) + 0.0
-    print()
-    print(estimated_time)
-    print()
     print_stats(stats_list, estimated_time, len_b)
     return True
 
