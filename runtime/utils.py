@@ -49,7 +49,7 @@ def profile_time(proc, repeat):
     return min(time_usage)
 
 
-def profiler_candset(proc, sample_proportions=[0.3, 0.5, 0.6, 0.7], repeat=2):
+def profiler_candset(proc, sample_proportions=[0.1, 0.2, 0.3], repeat=1):
     candset = proc[1]
     len_candset = len(candset)
     stats = []
