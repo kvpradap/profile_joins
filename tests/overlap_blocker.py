@@ -3,9 +3,11 @@ import os
 import pandas as pd
 import dask
 import sys
-sys.path.append('/Users/pradap/Documents/Research/Python-Package/pradap/profile_joins')
+#sys.path.append('/Users/pradap/Documents/Research/Python-Package/pradap/profile_joins')
+sys.path.append('/scratch/pradap/python-work/profile_joins')
 
 from dmagellan.blocker.attrequivalence.attr_equiv_blocker import AttrEquivalenceBlocker
+from dmagellan.blocker.overlap.overlapblocker import OverlapBlocker
 
 datapath = "../datasets/"
 # A = pd.read_csv(os.path.join(datapath, 'person_table_A.csv'), low_memory=False)
@@ -25,21 +27,22 @@ C = ab.block_tables(A, B, 'id', 'id', 'year', 'year', nltable_chunks=2,
 print(len(C))
 from runtime.blocker.overlap_blocker import profile_candset
 
-est = profile_candset(C, A, B, "l_id", "r_id", "id", "id", 'title', 'title', compute=True,
+est = profile_candset(C, A, B, "l_id", "r_id", "id", "id", 'title', 'title', compute=True,rem_stop_words=True,
                       grid_params={'nchunks':[1, 2, 4]})
+ob = OverlapBlocker()
 print(est)
 import time
 t1 = time.time()
-D = ab.block_candset(C, A, B, "l_id", "r_id", "id", "id", 'year', 'year', compute=True,
+D = ob.block_candset(C, A, B, "l_id", "r_id", "id", "id", 'year', 'year', compute=True,
                     nchunks=4)
 print(time.time()-t1)
 t1 = time.time()
-D = ab.block_candset(C, A, B, "l_id", "r_id", "id", "id", 'year', 'year', compute=True,
+D = ob.block_candset(C, A, B, "l_id", "r_id", "id", "id", 'year', 'year', compute=True,
                     nchunks=2)
 print(time.time()-t1)
 
 t1 = time.time()
-D = ab.block_candset(C, A, B, "l_id", "r_id", "id", "id", 'year', 'year', compute=True,
+D = ob.block_candset(C, A, B, "l_id", "r_id", "id", "id", 'year', 'year', compute=True,
                     nchunks=1)
 print(time.time()-t1)
-# print(len(D))
+#print(len(D))

@@ -6,13 +6,16 @@ import dask
 from dmagellan.blocker.attrequivalence.attr_equiv_blocker import AttrEquivalenceBlocker
 
 datapath = "../datasets/"
+import sys
+sys.path.append('/scratch/pradap/python-work/profile_joins')
+
 # A = pd.read_csv(os.path.join(datapath, 'person_table_A.csv'), low_memory=False)
 # B = pd.read_csv(os.path.join(datapath, 'person_table_B.csv'), low_memory=False)
 
 A = pd.read_csv(os.path.join(datapath, 'tracks.csv'), low_memory=False)
 B = pd.read_csv(os.path.join(datapath, 'songs.csv'), low_memory=False)
-A = A.sample(50000)
-B = B.sample(50000)
+A = A.sample(70000)
+B = B.sample(70000)
 
 print('Reading the files done')
 ab = AttrEquivalenceBlocker()

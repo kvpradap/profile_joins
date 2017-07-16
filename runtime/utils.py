@@ -75,7 +75,7 @@ def profiler_candset(proc, sample_proportions=[0.1, 0.2, 0.3], repeat=1):
     z = list(stats_df['Time Taken'])
 
     # interpolate
-    interpolate_function = InterpolatedUnivariateSpline(y, z, k=3)
+    interpolate_function = InterpolatedUnivariateSpline(y, z, k=2)
     print(dict(zip(y, z)))
 
 
